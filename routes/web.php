@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminProductController;
 use App\Http\Controllers\ProductCatalogController;
 use App\Http\Controllers\Admin\ShippingServiceController;
 use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\CartController;
 
 
 Route::get('/', function () {
@@ -40,3 +41,11 @@ Route::get('/shipping', [ShippingServiceController::class, 'index'])->name('ship
 Route::post('/shipping', [ShippingServiceController::class, 'store'])->name('shipping.store');
 Route::put('/shipping/{shippingService}', [ShippingServiceController::class, 'update'])->name('shipping.update');
 Route::delete('/shipping/{shippingService}', [ShippingServiceController::class, 'destroy'])->name('shipping.destroy');
+
+Route::middleware(['auth', 'role:customer'])->group(function () {
+    Route::get('/keranjang', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/keranjang/{product}', [CartController::class, 'store'])->name('cart.store');
+    Route::patch('/keranjang/{product}', [CartController::class, 'update'])->name('cart.update');
+    Route::delete('/keranjang/{product}', [CartController::class, 'destroy'])->name('cart.destroy');
+});
+
